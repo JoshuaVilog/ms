@@ -1,0 +1,124 @@
+
+let pageName = "tableCRUD2";
+
+
+$(document).ready(function() {
+    $("#navUtilities").addClass("active");
+    $("#navUtility2").addClass("active");
+    $("#collapseUtilities").addClass("show");
+
+
+    $("#btnOpenAddModal").click(function(){
+        $("#modalAdd").modal("show");
+    });
+
+    $("#btnAdd").click(function(){
+    
+        let desc = $("#txtDesc").val();
+        let category = $("#selectDesc").val();
+
+        if(desc == ""){
+            Swal.fire({
+                title: 'Incomplete Form!',
+                text: 'Please fill up all the required information.',
+                icon: 'warning'
+            })
+        } else {
+            $.ajax({
+                url: "ajax/insert.php",
+                method: "POST",
+                data: {
+                    desc:desc,
+                    category: category
+                },
+                success: function(response) {
+        
+                    if(response == "duplicate"){
+                        Swal.fire({
+                            title: 'Duplicate!',
+                            text: 'Please fill up another description.',
+                            icon: 'warning'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Record Added Successfully!',
+                            text: '',
+                            icon: 'success',
+                            timer: 2000,
+                            willClose: () => {
+                                window.location.href = "/"+rootFolder+"/"+pageName+"/";
+                            },
+                        })
+                    }
+                    
+                }
+            });
+        }
+        
+    });
+    $("#btnEdit").click(function(){
+        let desc = $("#txtEditDesc").val();
+        let category = $("#selectEditDesc").val();
+        let id = $("#hiddenID").val();
+    
+        if(desc == ""){
+            Swal.fire({
+                title: 'Incomplete Form!',
+                text: 'Please fill up all the required information.',
+                icon: 'warning'
+            })
+        } else {
+            $.ajax({
+                url: "ajax/update.php",
+                method: "POST",
+                data: { 
+                    desc: desc,
+                    category: category,
+                    id: id,
+                },
+                success: function(response) {
+
+                    if(response == "duplicate"){
+                        Swal.fire({
+                            title: 'Duplicate!',
+                            text: 'Please fill up another description.',
+                            icon: 'warning'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Record Updated Successfully!',
+                            text: '',
+                            icon: 'success',
+                            timer: 2000,
+                            willClose: () => {
+                                window.location.href = "/"+rootFolder+"/"+pageName+"/";
+                            },
+                        })
+                    }
+                    
+                }
+            });
+         }
+    
+    });
+
+});
+  
+let selectDesc = $("#selectDesc");
+let txtAddNewDesc = $("#txtAddNewDesc");
+let btnAddNewDesc = $("#btnAddNewDesc");
+let btnSaveNewDesc = $("#btnSaveNewDesc");
+let btnCancelAddDesc = $("#btnCancelAddDesc");
+let url = "/"+rootFolder+"/getCodes/insert/insertDesc.php";
+
+setSelectAddNew(selectDesc, txtAddNewDesc, btnAddNewDesc, btnSaveNewDesc,  btnCancelAddDesc, url);
+
+let selectEditDesc = $("#selectEditDesc");
+let txtEditAddNewDesc = $("#txtEditAddNewDesc");
+let btnEditAddNewDesc = $("#btnEditAddNewDesc");
+let btnEditSaveNewDesc = $("#btnEditSaveNewDesc");
+let btnEditCancelAddDesc = $("#btnEditCancelAddDesc");
+let urlEdit = "/"+rootFolder+"/getCodes/insert/insertDesc.php";
+
+setSelectAddNew(selectEditDesc, txtEditAddNewDesc, btnEditAddNewDesc, btnEditSaveNewDesc,  btnEditCancelAddDesc, url);
+
